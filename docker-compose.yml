@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    image: docker.io/pranavs24/mean-backend:latest
+    container_name: backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - MONGO_URL=mongodb://mongo:27017/dd_db
+    depends_on:
+      - mongo
+
+  frontend:
+    image: docker.io/pranavs24/mean-frontend:latest
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
