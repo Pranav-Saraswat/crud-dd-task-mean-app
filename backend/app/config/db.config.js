@@ -1,3 +1,3 @@
 module.exports = {
-  url: "mongodb://0.0.0.0:27017/dd_db"
+    url: "mongodb://mongo:27017/dd_db"
 };
