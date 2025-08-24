@@ -127,7 +127,7 @@ volumes:
 
 ## Accessing the Application
 
-- Open your VM’s public IP in a browser: `[http://74.226.208.219/](http://74.226.208.219/)/`
+- Open your VM’s public IP in a browser: [http://74.226.208.219/](http://74.226.208.219/)/
 - The app is available on port 80.
 
 ---
