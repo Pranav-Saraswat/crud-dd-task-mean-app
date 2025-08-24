@@ -1,5 +1,6 @@
 # MEAN CRUD App: Setup, Containerization & Deployment
 
+
 ## Project Overview
 
 A full-stack MEAN (MongoDB, Express, Angular, Node.js) CRUD application, containerized and deployed using Docker Compose, with automated CI/CD via GitHub Actions.
@@ -46,7 +47,35 @@ docker push pranavs24/mean-frontend
 	 cd crud-dd-task-mean-app
 	 ```
 
-4. **Edit `docker-compose.yml`**  
+4. **Edit `frontend/nginx.conf`**
+```
+events {
+    worker_connections 1024;
+}
+http {
+    include mime.types;
+    default_type application/octet-stream;
+
+    server {
+        listen 80;
+
+        location / {
+            root /usr/share/nginx/html;
+            index index.html index.htm;
+            try_files $uri $uri/ /index.html;
+        }
+        location /api/ {
+            proxy_pass http://backend:8080;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
+```
+
+5. **Edit `docker-compose.yml`**  
 
 ```yaml
 version: "3.9"
@@ -98,30 +127,28 @@ volumes:
 
 ## Accessing the Application
 
-- Open your VM’s public IP in a browser: `http://74.226.208.219/`
+- Open your VM’s public IP in a browser: `[http://74.226.208.219/](http://74.226.208.219/)/`
 - The app is available on port 80.
 
 ---
 
 ### Screenshots
 
-Below are screenshots demonstrating the application's features:
 
-#### Home Page
-![Home](screenshots/home.png)
+## ShowCase Screenshots
 
-#### Add Tutorial
-![Add Tutorial](screenshots/add.png)
+| Home Page                | Add Tutorial                | Add Success                  |
+|--------------------------|-----------------------------|------------------------------|
+| ![Home](screenshots/home.png) | ![Add Tutorial](screenshots/add.png) | ![Add Success](screenshots/add_sucess.png) |
+|  **Edit Tutorial**        | **Home After Add**          | **Home After Delete**        |
+| ![Edit Tutorial](screenshots/edit.png) | ![Home After Add](screenshots/home_after_add.png) | ![Home After Delete](screenshots/home_after_delete.png) |
 
-#### Add Success
-![Add Success](screenshots/add_sucess.png)
+## CI/CD ScreenShots
+| **CI/CD Main** | **CI/CD Build Tree** | **CI/CD Deploy Tree** | **CI/CD Config** |
+|----------------|---------------------|----------------------|------------------|
+| ![CI/CD Main](screenshots/cicd_main.png) | ![CI/CD Build Tree](screenshots/cicd_build_tree.png) | ![CI/CD Deploy Tree](screenshots/cicd_deploy_tree.png) | ![CI/CD Config](screenshots/cicd_conf.png) |
 
-#### Edit Tutorial
-![Edit Tutorial](screenshots/edit.png)
-
-#### Home After Add
-![Home After Add](screenshots/home_after_add.png)
-
-#### Home After Delete
-![Home After Delete](screenshots/home_after_delete.png)
-
+## Docker Image Build And push on CI/CD
+|**Docker Image Build And Push Tree**|
+|---------|
+|![Docker Image Build And Push Tree](screenshots/cicd_build_tree.png)|
