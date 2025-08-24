@@ -1,9 +1,13 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine
+
 WORKDIR /app
+
 COPY package*.json ./
-RUN npm ci --only=production
+
+RUN npm install --omit=dev
+
 COPY . .
+
 EXPOSE 8080
-ENV NODE_ENV=production
-ENV MONGO_URL=mongodb://mongo:27017/dd_db
+
 CMD ["node", "server.js"]
